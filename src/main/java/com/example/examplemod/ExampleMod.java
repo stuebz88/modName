@@ -1,6 +1,6 @@
 package com.example.examplemod;
 
-// Test Comment
+// Test Comment2
 // hi fattie
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
