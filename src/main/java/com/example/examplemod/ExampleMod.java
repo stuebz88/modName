@@ -16,7 +16,7 @@ public class ExampleMod
     @Mod.EventHandler
     public void preInit(FMLInitializationEvent event)
     {
-    	
+    	//test
     }
     
     @Mod.EventHandler
