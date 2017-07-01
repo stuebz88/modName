@@ -1,7 +1,7 @@
 package com.example.examplemod;
 
 // Test Comment
-// hi test hello world whatevs
+// hi fattie
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
