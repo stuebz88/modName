@@ -1,34 +1,36 @@
 package com.example.examplemod;
 
+import com.example.examplemod.proxy.IProxy;
+
 // Test Comment2
 // hi fattie
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
-@Mod(modid = ExampleMod.MODID, version = ExampleMod.VERSION)
+@Mod(modid = Ref.MODID, name=Ref.NAME, version = Ref.VERSION)
 public class ExampleMod
 {
-    public static final String MODID = "examplemod";
-    public static final String VERSION = "1.0";
-    
+	@SidedProxy(clientSide=Ref.CLIENT_PROXY, serverSide=Ref.SERVER_PROXY)
+	public static IProxy proxy;
+	
     @Mod.EventHandler
     public void preInit(FMLInitializationEvent event)
     {
-    	//test
+    	proxy.preInit();
     }
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        // some example code
-        System.out.println("DIRT BLOCK >> "+Blocks.DIRT.getUnlocalizedName());
+        proxy.init();
     }
     
     @Mod.EventHandler
     public void postInit(FMLInitializationEvent event)
     {
-    	
+    	proxy.postInit();
     }
 }
