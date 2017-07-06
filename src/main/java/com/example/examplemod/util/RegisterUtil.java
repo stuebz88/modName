@@ -16,8 +16,8 @@ public class RegisterUtil {
 		for(Block block : blocks) {
 			final ItemBlock itemblock = new ItemBlock(block);
 			if(event.getSide() == Side.CLIENT) {
-				GameRegistry.register(block);
-				GameRegistry.register(itemblock)
+				//GameRegistry.register(block);
+				//GameRegistry.register(itemblock)
 			}
 		}
 	}

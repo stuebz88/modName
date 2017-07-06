@@ -9,7 +9,7 @@ public final class ModBlocks {
 	public static net.minecraft.block.Block modBlock;
 	
 	public static void createBlocks() {
-		GameRegistry.register(modBlock = ((Block) new BasicBlock("modBlock")).setLightLevel(1.0f), "modBlock");
+		//GameRegistry.register(modBlock = ((Block) new BasicBlock("modBlock")).setLightLevel(1.0f), "modBlock");
 		//GameRegistry.registerBlock(modBlock = ((Block) new BasicBlock("modBlock")).setLightLevel(1.0f), "modBlock");
 	}
 }
