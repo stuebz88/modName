@@ -1,20 +1,29 @@
 package com.example.examplemod.proxy;
 
-import net.minecraft.world.WorldType;
+import com.example.examplemod.init.ModRegistry;
 
-public class CommonProxy implements IProxy
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+public class CommonProxy
 {
-	public void preInit()
+	//public static Configuration config;
+	
+	public void preInit(FMLPreInitializationEvent e)
 	{
-		
+		/*File configDir = e.getModConfigurationDirectory();
+		config = new Configuration(new File(configDir.getPath(), "examplemod.cfg"));
+		Config.readConfig();*/
+		MinecraftForge.EVENT_BUS.register(new ModRegistry());
 	}
 	
-	public void init()
+	public void init(FMLInitializationEvent e)
 	{
-		
 	}
 	
-	public void postInit()
+	public void postInit(FMLPostInitializationEvent e)
 	{
 
 	}
