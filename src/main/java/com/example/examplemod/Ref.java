@@ -10,12 +10,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.biome.Biome;
 
 public class Ref 
 {
 	public static final List<Item> ITEMS = new ArrayList<Item>();
 	public static final List<Block> BLOCKS = new ArrayList<Block>();
 	public static final List<IRecipe> RECIPES = new ArrayList<IRecipe>();
+	public static final List<Biome> BIOMES = new ArrayList<Biome>();
 	
 	public static final String MODID = "examplemod";
     public static final String NAME = "ModName";

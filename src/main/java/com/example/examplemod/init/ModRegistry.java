@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -38,5 +39,11 @@ public class ModRegistry
 	{
 		initRecipes();
 		e.getRegistry().registerAll(Ref.RECIPES.toArray(new IRecipe[0]));
+	}
+	
+	@SubscribeEvent
+	public void onBiomeRegistry(RegistryEvent.Register<Biome> e)
+	{
+		e.getRegistry().registerAll(Ref.BIOMES.toArray(new Biome[0]));
 	}
 }
