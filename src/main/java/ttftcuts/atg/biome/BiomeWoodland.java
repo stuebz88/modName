@@ -6,6 +6,8 @@ import ttftcuts.atg.ATGBiomes;
 
 import java.util.Random;
 
+import com.example.examplemod.Ref;
+
 public class BiomeWoodland extends Biome {
     public BiomeWoodland() {
         super(new Biome.BiomeProperties("Woodland")
@@ -15,13 +17,15 @@ public class BiomeWoodland extends Biome {
                 .setRainfall(0.67f)
         );
 
+        this.setRegistryName(Ref.MODID+":woodland");
         this.decorator.treesPerChunk = 5;
         this.decorator.grassPerChunk = 4;
         this.decorator.flowersPerChunk = 3;
+        Ref.BIOMES.add(this);
     }
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random rand)
+    public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
         return rand.nextInt(4) == 0 ? ATGBiomes.Features.OAK_SHRUB : Biome.TREE_FEATURE;
     }

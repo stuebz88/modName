@@ -1,15 +1,19 @@
 package ttftcuts.atg.generator.biome;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import com.example.examplemod.ExampleMod;
+
 import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
-import ttftcuts.atg.ATG;
-import ttftcuts.atg.ATGBiomes;
 import ttftcuts.atg.generator.CoreNoise;
 import ttftcuts.atg.settings.BiomeSettings;
 import ttftcuts.atg.util.MathUtil;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class BiomeRegistry {
 
@@ -93,7 +97,7 @@ public class BiomeRegistry {
             if (!Biome.REGISTRY.containsKey(def.name)) {
                 continue;
             }
-            IBiomeHeightModifier mod = ATG.globalRegistry.getHeightModifier(def.heightMod);
+            IBiomeHeightModifier mod = ExampleMod.globalRegistry.getHeightModifier(def.heightMod);
             if (mod == null) {
                 continue;
             }

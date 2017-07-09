@@ -1,5 +1,7 @@
 package ttftcuts.atg.biome;
 
+import com.example.examplemod.Ref;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.Biome;
 
@@ -15,6 +17,7 @@ public class BiomeSnowyGravelBeach extends Biome
                 .setSnowEnabled()
         );
 
+        this.setRegistryName(Ref.MODID+":snowy_gravel_beach");
         this.spawnableCreatureList.clear();
         this.topBlock = Blocks.GRAVEL.getDefaultState();
         this.fillerBlock = Blocks.GRAVEL.getDefaultState();
@@ -22,5 +25,6 @@ public class BiomeSnowyGravelBeach extends Biome
         this.decorator.deadBushPerChunk = 0;
         this.decorator.reedsPerChunk = 0;
         this.decorator.cactiPerChunk = 0;
+        Ref.BIOMES.add(this);
     }
 }

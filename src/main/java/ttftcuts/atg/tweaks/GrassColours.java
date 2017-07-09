@@ -1,12 +1,22 @@
 package ttftcuts.atg.tweaks;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.example.examplemod.ExampleMod;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeColorHelper;
@@ -17,18 +27,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ttftcuts.atg.ATG;
-import ttftcuts.atg.util.CoordCache;
-import ttftcuts.atg.util.CoordPair;
 import ttftcuts.atg.util.GeneralUtil;
 import ttftcuts.atg.util.MathUtil;
-
-import java.lang.reflect.*;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @SideOnly(Side.CLIENT)
 public class GrassColours {
@@ -39,7 +39,7 @@ public class GrassColours {
     public static LoadingCache<GrassCacheKey, Biome> grassCache;
 
     public static void init() {
-        ATG.logger.info("ATTEMPTING TO COMMIT GREAT EVIL:");
+    	ExampleMod.logger.info("ATTEMPTING TO COMMIT GREAT EVIL:");
         try {
             doImmenseEvil();
         } catch(Throwable e) {
@@ -81,10 +81,10 @@ public class GrassColours {
 
         // get the version of the method used by the object to be wrapped - avoids exceptions for calling an abstract method
         Class wrappedResolverClass = wrappedResolver.getClass();
-        Method wrappedGetColorAtPos = ReflectionHelper.findMethod(wrappedResolverClass, null, GET_COLOR_AT_POS, Biome.class, BlockPos.class);
+        Method wrappedGetColorAtPos = ReflectionHelper.findMethod(wrappedResolverClass, "getColorAtPos", "func_180283_a", Biome.class, BlockPos.class);
 
         // build a proxy
-        Method getColorAtPos = ReflectionHelper.findMethod(colorResolver, null, GET_COLOR_AT_POS, Biome.class, BlockPos.class);
+        Method getColorAtPos = ReflectionHelper.findMethod(colorResolver, "getColorAtPos", "func_180283_a", Biome.class, BlockPos.class);
         Object proxy = Proxy.newProxyInstance(colorResolver.getClassLoader(), new Class[] { colorResolver }, new GrassHandler(getColorAtPos, wrappedResolver, wrappedGetColorAtPos) );
 
         // set the field
@@ -102,7 +102,7 @@ public class GrassColours {
             this.wrappedResolver = wrappedResolver;
             this.wrappedGetColorAtPos = wrappedGetColorAtPos;
 
-            ATG.logger.info(abstractGetColorAtPos);
+            ExampleMod.logger.info(abstractGetColorAtPos);
         }
 
         @Override

@@ -42,7 +42,7 @@ public class ChunkProviderBasic implements IChunkGenerator {
     protected NoiseGeneratorPerlin surfaceNoise;
 
     protected double[] depthBuffer = new double[256];
-    protected ChunkProviderSettings basicSettings = ChunkProviderSettings.Factory.jsonToFactory("").build();
+    protected ChunkGeneratorSettings basicSettings = ChunkGeneratorSettings.Factory.jsonToFactory("").build();
 
     public ChunkProviderBasic(World world) {
         this.world = world;
@@ -140,7 +140,7 @@ public class ChunkProviderBasic implements IChunkGenerator {
     }
 
     @Override
-    public Chunk provideChunk(int x, int z) {
+    public Chunk generateChunk(int x, int z) {
         ChunkPrimer chunkprimer = new ChunkPrimer();
 
         this.fillChunk(x,z,chunkprimer);
@@ -284,14 +284,14 @@ public class ChunkProviderBasic implements IChunkGenerator {
 
     @Nullable
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position) {
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
         if ("Stronghold".equals(structureName))
         {
             for (MapGenStructure mapgenstructure : this.structureGenerators)
             {
                 if (mapgenstructure instanceof MapGenStronghold)
                 {
-                    return mapgenstructure.getClosestStrongholdPos(worldIn, position);
+                    return mapgenstructure.getNearestStructurePos(worldIn, position,false);
                 }
             }
         }
@@ -340,19 +340,6 @@ public class ChunkProviderBasic implements IChunkGenerator {
             return false;
         }
     }
-
-	@Override
-	public Chunk generateChunk(int x, int z) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position,
-			boolean findUnexplored) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {

@@ -1,8 +1,9 @@
 package com.example.examplemod.proxy;
 
+import com.example.examplemod.ExampleMod;
+import com.example.examplemod.init.ModRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.*;
-import ttftcuts.atg.ATG;
 import ttftcuts.atg.ATGBiomes;
 import ttftcuts.atg.generator.biome.VillageBlocks;
 
@@ -10,21 +11,26 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
         ATGBiomes.init();
-        ATG.modCompat.preInit();
+        ExampleMod.modCompat.preInit();
+        /*File configDir = e.getModConfigurationDirectory();
+		config = new Configuration(new File(configDir.getPath(), "examplemod.cfg"));
+		Config.readConfig();*/
+		MinecraftForge.EVENT_BUS.register(new ModRegistry());
     }
 
     public void init(FMLInitializationEvent event) {
         MinecraftForge.TERRAIN_GEN_BUS.register(new VillageBlocks());
-        ATG.modCompat.init();
+        ExampleMod.modCompat.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        ATG.modCompat.postInit();
+    	ExampleMod.modCompat.postInit();
+        //ModRegistry.initBiomes();
     }
 
     public void loadComplete(FMLLoadCompleteEvent event) {
-        ATG.modCompat.processIMC(FMLInterModComms.fetchRuntimeMessages(this));
-        ATG.modCompat.registerBuiltInModules();
+    	ExampleMod.modCompat.processIMC(FMLInterModComms.fetchRuntimeMessages(this));
+    	ExampleMod.modCompat.registerBuiltInModules();
     }
 
     public void serverStarting(FMLServerStartingEvent event) {

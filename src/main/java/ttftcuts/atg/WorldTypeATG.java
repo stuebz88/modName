@@ -1,6 +1,8 @@
 package ttftcuts.atg;
 
 
+import com.example.examplemod.ExampleMod;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiCreateWorld;
 import net.minecraft.init.Biomes;
@@ -36,7 +38,7 @@ public class WorldTypeATG extends WorldType {
     @Override
     public void onCustomizeButton(Minecraft mc, GuiCreateWorld guiCreateWorld) {
         // testing time
-        ATG.logger.info("wheee");
+    	ExampleMod.logger.info("wheee");
 
         /*BiomeSettings testsettings = new DefaultBiomeSettings();
 
@@ -60,7 +62,7 @@ public class WorldTypeATG extends WorldType {
         DefaultWorldSettings testsettings = new DefaultWorldSettings();
         testsettings.applyDefaultModuleStack();
 
-        ATG.logger.info(testsettings.writeToJson());
+        ExampleMod.logger.info(testsettings.writeToJson());
     }
 
     @Override

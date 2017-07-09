@@ -1,10 +1,11 @@
 package ttftcuts.atg.settings;
 
-import ttftcuts.atg.ATG;
-import ttftcuts.atg.compat.BiomeModule;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.examplemod.ExampleMod;
+
+import ttftcuts.atg.compat.BiomeModule;
 
 public class DefaultWorldSettings extends WorldSettings {
 
@@ -15,7 +16,7 @@ public class DefaultWorldSettings extends WorldSettings {
     public void applyDefaultModuleStack() {
         List<BiomeModule> modules = new ArrayList<>();
 
-        for (BiomeModule module : ATG.globalRegistry.biomeModules) {
+        for (BiomeModule module : ExampleMod.globalRegistry.biomeModules) {
             if (module.active) {
                 modules.add(module);
             }
@@ -25,7 +26,7 @@ public class DefaultWorldSettings extends WorldSettings {
 
         for (int i=modules.size()-1; i>=0; i--) {
             BiomeModule module = modules.get(i);
-            ATG.logger.info("Applying Biome Module: {} from {}", module.name, module.owner);
+            ExampleMod.logger.info("Applying Biome Module: {} from {}", module.name, module.owner);
             this.biomeSettings.apply(module.settings);
         }
     }

@@ -13,6 +13,8 @@ import ttftcuts.atg.ATGBiomes;
 
 import java.util.Random;
 
+import com.example.examplemod.Ref;
+
 public class BiomeTundra extends Biome {
 
     public BiomeTundra() {
@@ -23,6 +25,7 @@ public class BiomeTundra extends Biome {
                 .setRainfall(0.45f)
         );
 
+        this.setRegistryName(Ref.MODID+":steppe");
         this.decorator.treesPerChunk = 1;
         this.decorator.grassPerChunk = 10;
         this.decorator.flowersPerChunk = 2;
@@ -32,10 +35,11 @@ public class BiomeTundra extends Biome {
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbit.class, 10, 2, 3));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntitySheep.class, 12, 1, 5));
+        Ref.BIOMES.add(this);
     }
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random rand)
+    public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
         return ATGBiomes.Features.TUNDRA_SHRUB;
     }

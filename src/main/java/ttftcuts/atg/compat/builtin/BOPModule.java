@@ -1,5 +1,8 @@
 package ttftcuts.atg.compat.builtin;
 
+import com.example.examplemod.ExampleMod;
+import com.example.examplemod.init.ModRegistry;
+
 import net.minecraft.init.Biomes;
 import ttftcuts.atg.ATGBiomes;
 import ttftcuts.atg.generator.biome.BiomeRegistry.EnumBiomeCategory;
@@ -20,10 +23,10 @@ public class BOPModule extends ProvidedBiomeModule {
 
         //------ Replacements ---------------------------------------------------------
 
-        b.replaceBiome(ATGBiomes.SHRUBLAND, "shrubland");
-        b.replaceBiome(ATGBiomes.WOODLAND, "woodland");
-        b.replaceBiome(ATGBiomes.GRAVEL_BEACH, "gravel_beach");
-        b.replaceBiome(ATGBiomes.TUNDRA, "tundra");
+        b.replaceBiome(ModRegistry.SHRUBLAND, "shrubland");
+        b.replaceBiome(ModRegistry.WOODLAND, "woodland");
+        b.replaceBiome(ModRegistry.GRAVEL_BEACH, "gravel_beach");
+        b.replaceBiome(ModRegistry.TUNDRA, "tundra");
 
         //------ Biomes ---------------------------------------------------------
 
@@ -196,7 +199,7 @@ public class BOPModule extends ProvidedBiomeModule {
         b.addSubBiome(Biomes.FOREST_HILLS, "mountain_foothills", 1.0);
         b.addSubBiome("overgrown_cliffs", Biomes.JUNGLE, 0.2);
         b.addSubBiome("overgrown_cliffs", "bamboo_forest", 0.1);
-        b.addSubBiome("overgrown_cliffs", ATGBiomes.TROPICAL_SHRUBLAND, 0.1);
+        b.addSubBiome("overgrown_cliffs", ModRegistry.TROPICAL_SHRUBLAND, 0.1);
 
         b.addSubBiome(Biomes.JUNGLE_HILLS, "overgrown_cliffs", clearing);
 

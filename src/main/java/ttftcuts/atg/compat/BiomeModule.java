@@ -1,9 +1,10 @@
 package ttftcuts.atg.compat;
 
+import com.example.examplemod.ExampleMod;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import ttftcuts.atg.ATG;
 import ttftcuts.atg.configuration.ConfigHandler;
 import ttftcuts.atg.settings.BiomeSettings;
 
@@ -25,18 +26,18 @@ public class BiomeModule implements Comparable<BiomeModule> {
 
     public static void fromIMC(FMLInterModComms.IMCMessage message) {
         if (!message.isNBTMessage()) {
-            ATG.logger.warn("Invalid IMC sent by {} - biomeModule expects NBT", message.getSender());
+        	ExampleMod.logger.warn("Invalid IMC sent by {} - biomeModule expects NBT", message.getSender());
             return;
         }
 
         NBTTagCompound tag = message.getNBTValue();
 
         if (!tag.hasKey("name") || tag.getString("name").isEmpty()) {
-            ATG.logger.warn("Invalid IMC sent by {} - biomeModule requires a name in the 'name' tag", message.getSender());
+        	ExampleMod.logger.warn("Invalid IMC sent by {} - biomeModule requires a name in the 'name' tag", message.getSender());
             return;
         }
         if (!tag.hasKey("json") || tag.getString("json").isEmpty()) {
-            ATG.logger.warn("Invalid IMC sent by {} - biomeModule requires biome settings data in the 'json' tag", message.getSender());
+        	ExampleMod.logger.warn("Invalid IMC sent by {} - biomeModule requires biome settings data in the 'json' tag", message.getSender());
             return;
         }
 
@@ -45,13 +46,13 @@ public class BiomeModule implements Comparable<BiomeModule> {
         try {
             settings.readFromJson(tag.getString("json"));
         } catch (Exception e) {
-            ATG.logger.warn("Invalid IMC sent by {} - biomeModule received invalid biome json data", message.getSender());
+        	ExampleMod.logger.warn("Invalid IMC sent by {} - biomeModule received invalid biome json data", message.getSender());
             return;
         }
 
         BiomeModule module = new BiomeModule(tag.getString("name"), message.getSender(), settings, tag.getBoolean("enabled"));
 
-        ATG.globalRegistry.biomeModules.add(module);
+        ExampleMod.globalRegistry.biomeModules.add(module);
     }
 
     @Override

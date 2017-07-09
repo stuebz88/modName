@@ -1,6 +1,8 @@
 package ttftcuts.atg.compat.builtin;
 
-import ttftcuts.atg.ATG;
+import com.example.examplemod.ExampleMod;
+import com.example.examplemod.Ref;
+
 import ttftcuts.atg.compat.BiomeModule;
 import ttftcuts.atg.settings.BiomeSettings;
 
@@ -8,10 +10,10 @@ public class ProvidedBiomeModule extends BiomeModule {
     public final String modid;
 
     public ProvidedBiomeModule(String name, String modid) {
-        super(name, ATG.MODID, new BiomeSettings(), true);
+        super(name, Ref.MODID, new BiomeSettings(), true);
         this.modid = modid;
 
-        ATG.modCompat.builtInBiomeModules.add(this);
-        ATG.logger.info("Created built-in biome module: {} for {}", this.name, this.modid);
+        ExampleMod.modCompat.builtInBiomeModules.add(this);
+        ExampleMod.logger.info("Created built-in biome module: {} for {}", this.name, this.modid);
     }
 }

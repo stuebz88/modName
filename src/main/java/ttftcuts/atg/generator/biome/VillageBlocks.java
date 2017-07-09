@@ -1,12 +1,15 @@
 package ttftcuts.atg.generator.biome;
 
-import net.minecraft.block.*;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import ttftcuts.atg.ATG;
 import ttftcuts.atg.ATGBiomes;
 
 public class VillageBlocks {

@@ -1,17 +1,12 @@
 package ttftcuts.atg.settings;
 
+import com.example.examplemod.ExampleMod;
 import com.google.gson.JsonObject;
+
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import ttftcuts.atg.ATG;
-import ttftcuts.atg.compat.BiomeModule;
 import ttftcuts.atg.util.JsonUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WorldSettings extends Settings {
 
@@ -88,7 +83,7 @@ public class WorldSettings extends Settings {
 
     private static void setGeneratorOptions(World world, WorldInfo worldInfo, WorldSettings settings) {
         if (!world.isRemote) {
-            ATG.logger.info("Setting empty generatorOptions to current defaults");
+        	ExampleMod.logger.info("Setting empty generatorOptions to current defaults");
             ObfuscationReflectionHelper.setPrivateValue(WorldInfo.class, worldInfo, settings.writeToJson(), "generatorOptions");
         }
     }

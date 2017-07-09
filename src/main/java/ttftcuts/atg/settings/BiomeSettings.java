@@ -1,18 +1,23 @@
 package ttftcuts.atg.settings;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.example.examplemod.ExampleMod;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
-import ttftcuts.atg.ATG;
 import ttftcuts.atg.generator.biome.BiomeModParameter;
-import ttftcuts.atg.generator.biome.BiomeRegistry;
 import ttftcuts.atg.generator.biome.BiomeRegistry.EnumBiomeCategory;
 import ttftcuts.atg.generator.biome.IBiomeHeightModifier;
 import ttftcuts.atg.util.JsonUtil;
-
-import java.util.*;
 
 public class BiomeSettings extends Settings implements Comparable<BiomeSettings> {
 
@@ -645,7 +650,7 @@ public class BiomeSettings extends Settings implements Comparable<BiomeSettings>
             o.addProperty("mod", heightMod);
 
             JsonObject po = new JsonObject();
-            IBiomeHeightModifier mod = ATG.globalRegistry.getHeightModifier(heightMod);
+            IBiomeHeightModifier mod = ExampleMod.globalRegistry.getHeightModifier(heightMod);
             if (mod != null) {
                 Map<String, BiomeModParameter> params = mod.getSettings();
                 if (params != null) {
@@ -676,7 +681,7 @@ public class BiomeSettings extends Settings implements Comparable<BiomeSettings>
             }
             if (o.has("params")) {
                 JsonObject po = JsonUtil.getAsObject(o, "params");
-                IBiomeHeightModifier mod = ATG.globalRegistry.getHeightModifier(heightMod);
+                IBiomeHeightModifier mod = ExampleMod.globalRegistry.getHeightModifier(heightMod);
                 if (mod != null) {
                     Map<String, BiomeModParameter> params = mod.getSettings();
                     if (params != null) {

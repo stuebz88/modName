@@ -7,6 +7,8 @@ import ttftcuts.atg.ATGBiomes;
 
 import java.util.Random;
 
+import com.example.examplemod.Ref;
+
 public class BiomeShrubland extends Biome {
 
     public BiomeShrubland() {
@@ -17,15 +19,17 @@ public class BiomeShrubland extends Biome {
                 .setRainfall(0.53f)
         );
 
+        this.setRegistryName(Ref.MODID+":shrubland");
         this.decorator.treesPerChunk = 1;
         this.decorator.grassPerChunk = 7;
         this.decorator.flowersPerChunk = 3;
 
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityHorse.class, 2, 2, 4));
+        Ref.BIOMES.add(this);
     }
 
     @Override
-    public WorldGenAbstractTree genBigTreeChance(Random rand)
+    public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
         return rand.nextInt(3) != 0 ? ATGBiomes.Features.OAK_SHRUB : Biome.TREE_FEATURE;
     }

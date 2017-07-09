@@ -1,13 +1,13 @@
 package ttftcuts.atg.configuration;
 
+import java.io.File;
+
+import com.example.examplemod.Ref;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import ttftcuts.atg.ATG;
-
-import javax.annotation.Nullable;
-import java.io.File;
 
 public class ConfigHandler {
 
@@ -35,7 +35,7 @@ public class ConfigHandler {
 
     @SubscribeEvent
     public void onChange(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(ATG.MODID)) {
+        if (event.getModID().equals(Ref.MODID)) {
             load();
         }
     }

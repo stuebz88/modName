@@ -1,9 +1,10 @@
 package ttftcuts.atg.util;
 
+import com.example.examplemod.ExampleMod;
+
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
-import ttftcuts.atg.ATG;
 import ttftcuts.atg.generator.BiomeProviderATG;
 
 public abstract class GeneralUtil {
@@ -20,7 +21,7 @@ public abstract class GeneralUtil {
     }
 
     public static boolean isWorldATG(World world) {
-        return world.getWorldType() == ATG.worldType;
+        return world.getWorldType() == ExampleMod.worldType;
     }
 
     public static String padString(String in, char pad, int toLength, boolean clip) {
@@ -38,10 +39,10 @@ public abstract class GeneralUtil {
     }
 
     public static void printBiomeInformation() {
-        ATG.logger.info("-------------------------------------------------------------------------------------------------------------");
-        ATG.logger.info("Biome Information");
-        ATG.logger.info("-------------------------------------------------------------------------------------------------------------");
-        ATG.logger.info("ID  | Location                                           | Name");
+        ExampleMod.logger.info("-------------------------------------------------------------------------------------------------------------");
+        ExampleMod.logger.info("Biome Information");
+        ExampleMod.logger.info("-------------------------------------------------------------------------------------------------------------");
+        ExampleMod.logger.info("ID  | Location                                           | Name");
 
         Biome biome;
         String output, name, prettyName;
@@ -62,9 +63,9 @@ public abstract class GeneralUtil {
             output += " | ";
             output += padString(name, ' ', 50);
 
-            ATG.logger.info(output);
+            ExampleMod.logger.info(output);
         }
 
-        ATG.logger.info("-------------------------------------------------------------------------------------------------------------");
+        ExampleMod.logger.info("-------------------------------------------------------------------------------------------------------------");
     }
 }

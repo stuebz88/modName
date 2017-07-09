@@ -14,6 +14,8 @@ import ttftcuts.atg.util.MathUtil;
 
 import java.util.Random;
 
+import com.example.examplemod.Ref;
+
 public class BiomeScrubland extends Biome {
 
     public BiomeScrubland() {
@@ -25,6 +27,7 @@ public class BiomeScrubland extends Biome {
                 .setRainDisabled()
         );
 
+        this.setRegistryName(Ref.MODID+":scrubland");
         this.decorator.treesPerChunk = -999;
         this.decorator.deadBushPerChunk = 50;
         this.decorator.reedsPerChunk = 10;
@@ -34,6 +37,7 @@ public class BiomeScrubland extends Biome {
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityCow.class, 6, 4, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityRabbit.class, 4, 2, 3));
+        Ref.BIOMES.add(this);
     }
 
     @Override

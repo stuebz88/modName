@@ -1,20 +1,17 @@
 package ttftcuts.atg.util;
 
+import com.example.examplemod.ExampleMod;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-//import com.sun.javaws.exceptions.InvalidArgumentException;
-import ttftcuts.atg.ATG;
-
-import java.util.Map;
 
 public abstract class JsonUtil {
     public static final JsonParser PARSER = new JsonParser();
 
     public static <T> T get(JsonObject json, String tag, T fallback) {
         if (!json.has(tag) || json.get(tag) == null) {
-            ATG.logger.warn("Json parsing: tag " +tag+ " is empty");
+        	ExampleMod.logger.warn("Json parsing: tag " +tag+ " is empty");
             return fallback;
         }
         return as(json.get(tag), fallback);
@@ -25,9 +22,9 @@ public abstract class JsonUtil {
         try {
             val = getValue(element, fallback);
         } catch (IllegalStateException|ClassCastException e) {
-            ATG.logger.warn("Incorrect value type: " +fallback.getClass()+", falling back to " +fallback);
+        	ExampleMod.logger.warn("Incorrect value type: " +fallback.getClass()+", falling back to " +fallback);
         } catch (IllegalArgumentException e) {
-            ATG.logger.warn("Unhandled fallback type: " +fallback.getClass());
+        	ExampleMod.logger.warn("Unhandled fallback type: " +fallback.getClass());
         }
         return val;
     }

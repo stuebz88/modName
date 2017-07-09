@@ -1,5 +1,7 @@
 package ttftcuts.atg;
 
+import com.example.examplemod.Ref;
+import com.example.examplemod.ExampleMod;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
@@ -30,26 +32,27 @@ public abstract class ATGBiomes {
 
     public static void init() {
         HeightModifiers.init();
-
-        SHRUBLAND = register("shrubland", new BiomeShrubland(), true, Type.PLAINS, Type.SPARSE);
-        WOODLAND = register("woodland", new BiomeWoodland(), false, Type.FOREST);
-        TROPICAL_SHRUBLAND = register("tropical_shrubland", new BiomeTropicalShrubland(), false, Type.HOT, Type.WET, Type.JUNGLE, Type.FOREST, Type.SAVANNA);
-        SCRUBLAND = register("scrubland", new BiomeScrubland(), true, Type.HOT, Type.SPARSE, Type.DRY, Type.SANDY, Type.SAVANNA);
-        TUNDRA = register("steppe", new BiomeTundra(), true, Type.PLAINS, Type.COLD, Type.CONIFEROUS, Type.SPARSE);
-        GRAVEL_BEACH = register("gravel_beach", new BiomeGravelBeach(), false, Type.COLD, Type.BEACH);
-        GRAVEL_BEACH_SNOWY = register("snowy_gravel_beach", new BiomeSnowyGravelBeach(), false, Type.COLD, Type.BEACH, Type.SNOWY);
+        
+        //SHRUBLAND = register("shrubland", new BiomeShrubland(), true, Type.PLAINS, Type.SPARSE);
+        //WOODLAND = register("woodland", new BiomeWoodland(), false, Type.FOREST);
+        //TROPICAL_SHRUBLAND = register("tropical_shrubland", new BiomeTropicalShrubland(), false, Type.HOT, Type.WET, Type.JUNGLE, Type.FOREST, Type.SAVANNA);
+        //SCRUBLAND = register("scrubland", new BiomeScrubland(), true, Type.HOT, Type.SPARSE, Type.DRY, Type.SANDY, Type.SAVANNA);
+        //TUNDRA = register("steppe", new BiomeTundra(), true, Type.PLAINS, Type.COLD, Type.CONIFEROUS, Type.SPARSE);
+        //GRAVEL_BEACH = register("gravel_beach", new BiomeGravelBeach(), false, Type.COLD, Type.BEACH);
+        //GRAVEL_BEACH_SNOWY = register("snowy_gravel_beach", new BiomeSnowyGravelBeach(), false, Type.COLD, Type.BEACH, Type.SNOWY);
     }
 
     public static Biome register(String name, Biome biome, boolean villages, BiomeDictionary.Type... dictionaryTypes) {
-        biome.setRegistryName(ATG.MODID, name);
-        GameRegistry.register(biome);
+        //biome.setRegistryName(ATG.MODID, name);
+        //GameRegistry.register(biome);
+        // public static final Biome NAME = new BiomeName();
 
         if (villages) {
             BiomeManager.addVillageBiome(biome, true);
         }
 
         if (dictionaryTypes.length > 0) {
-            BiomeDictionary.registerBiomeType(biome, dictionaryTypes);
+            //BiomeDictionary.registerBiomeType(biome, dictionaryTypes);
         }
 
         return biome;
@@ -63,11 +66,11 @@ public abstract class ATGBiomes {
         public static IBiomeHeightModifier OFFSET;
 
         public static void init() {
-            DUNES = ATG.globalRegistry.registerHeightModifier(new HeightModDunes(), "dunes");
-            ISLAND = ATG.globalRegistry.registerHeightModifier(new HeightModIsland(), "island");
-            MESA = ATG.globalRegistry.registerHeightModifier(new HeightModMesa(), "mesa");
-            PLATEAU = ATG.globalRegistry.registerHeightModifier(new HeightModPlateaus(), "plateau");
-            OFFSET = ATG.globalRegistry.registerHeightModifier(new HeightModOffset(), "offset");
+            DUNES = ExampleMod.globalRegistry.registerHeightModifier(new HeightModDunes(), "dunes");
+            ISLAND = ExampleMod.globalRegistry.registerHeightModifier(new HeightModIsland(), "island");
+            MESA = ExampleMod.globalRegistry.registerHeightModifier(new HeightModMesa(), "mesa");
+            PLATEAU = ExampleMod.globalRegistry.registerHeightModifier(new HeightModPlateaus(), "plateau");
+            OFFSET = ExampleMod.globalRegistry.registerHeightModifier(new HeightModOffset(), "offset");
         }
     }
 
