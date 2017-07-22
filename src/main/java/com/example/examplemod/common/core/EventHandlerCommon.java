@@ -29,6 +29,7 @@ public class EventHandlerCommon
 		{
 			WorldTurn.get(world);
 		}
+		world.getWorldType();
 	}
 	
 	@SubscribeEvent
@@ -59,9 +60,10 @@ public class EventHandlerCommon
 			{
 			
 				long totalTime = world.getWorldTime();
+				System.out.println(totalTime);
 				long currentTime = totalTime % 24000;
 			
-				if(currentTime == 0)
+				if(currentTime == 1)
 				{
 					System.out.println("Time is 0");
 					WorldTurn turn = WorldTurn.get(world);
@@ -84,4 +86,6 @@ public class EventHandlerCommon
 			counter++;
 		}
 	}
+	
+	
 }
