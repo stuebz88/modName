@@ -2,6 +2,7 @@ package com.example.examplemod.proxy;
 
 import com.example.examplemod.ExampleMod;
 import com.example.examplemod.common.core.EventHandlerCommon;
+import com.example.examplemod.init.ModCapabilities;
 import com.example.examplemod.init.ModRegistry;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -28,28 +29,30 @@ public class CommonProxy
 		Config.readConfig();*/
 		MinecraftForge.EVENT_BUS.register(new ModRegistry());
 		MinecraftForge.EVENT_BUS.register(new EventHandlerCommon());
+		ModCapabilities.registerCapabilities();
+		
 	}
 
-    public void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent e) {
         MinecraftForge.TERRAIN_GEN_BUS.register(new VillageBlocks());
         ExampleMod.modCompat.init();
     }
 
-    public void postInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent e) {
     	ExampleMod.modCompat.postInit();
         //ModRegistry.initBiomes();
     }
 
-    public void loadComplete(FMLLoadCompleteEvent event) {
+    public void loadComplete(FMLLoadCompleteEvent e) {
     	ExampleMod.modCompat.processIMC(FMLInterModComms.fetchRuntimeMessages(this));
     	ExampleMod.modCompat.registerBuiltInModules();
     }
 
-    public void serverStarting(FMLServerStartingEvent event) {
-
+    public void serverStarting(FMLServerStartingEvent e) {
+    	
     }
 
-    public void serverStopped(FMLServerStoppedEvent event) {
+    public void serverStopped(FMLServerStoppedEvent e) {
 		
 	}
 }

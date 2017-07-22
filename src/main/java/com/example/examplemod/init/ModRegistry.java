@@ -8,12 +8,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import ttftcuts.atg.biome.*;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
+import ttftcuts.atg.biome.BiomeGravelBeach;
+import ttftcuts.atg.biome.BiomeScrubland;
+import ttftcuts.atg.biome.BiomeShrubland;
+import ttftcuts.atg.biome.BiomeSnowyGravelBeach;
+import ttftcuts.atg.biome.BiomeTropicalShrubland;
+import ttftcuts.atg.biome.BiomeTundra;
+import ttftcuts.atg.biome.BiomeWoodland;
 
 public class ModRegistry 
 {

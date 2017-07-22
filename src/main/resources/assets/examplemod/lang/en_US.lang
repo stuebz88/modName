@@ -1,5 +1,5 @@
-#Creative Tab
+# Creative Tabs
 itemGroup.examplemod=Example Mod
 
-#Blocks
-tile.examplemod.banner=Mod Banner
+# Blocks
+tile.examplemod:banner=Mod Banner
