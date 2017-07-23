@@ -1,6 +1,8 @@
-package com.example.examplemod.common.core.turn;
+package com.example.examplemod.common.caps.turn;
 
 import javax.annotation.Nullable;
+
+import com.example.examplemod.common.core.turn.WorldTurn;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextComponentString;
@@ -8,8 +10,8 @@ import net.minecraft.world.World;
 
 public class PlayerTurn implements ITurn
 {
-	private int turn = -1;
-	private int startingTurn = -1;
+	private int turn = 0;
+	private int startingTurn = 0;
 	private EntityPlayer player;
 	
 	public PlayerTurn (@Nullable EntityPlayer player) 

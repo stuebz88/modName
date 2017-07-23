@@ -1,8 +1,10 @@
-package com.example.examplemod.common.core.turn;
+package com.example.examplemod.common.caps.turn;
 
 import javax.annotation.Nullable;
 
 import com.example.examplemod.Ref;
+import com.example.examplemod.common.caps.CapabilityUtils;
+import com.example.examplemod.common.caps.SimpleCapProvider;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

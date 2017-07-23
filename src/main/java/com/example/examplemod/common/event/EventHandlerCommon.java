@@ -1,9 +1,9 @@
-package com.example.examplemod.common.core;
+package com.example.examplemod.common.event;
 
 import java.util.ArrayList;
 
-import com.example.examplemod.common.core.turn.CapPlayerTurn;
-import com.example.examplemod.common.core.turn.ITurn;
+import com.example.examplemod.common.caps.turn.CapPlayerTurn;
+import com.example.examplemod.common.caps.turn.ITurn;
 import com.example.examplemod.common.core.turn.WorldTurn;
 
 import net.minecraft.entity.player.EntityPlayer;

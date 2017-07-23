@@ -1,8 +1,7 @@
-package com.example.examplemod.common.core.turn;
+package com.example.examplemod.common.caps.turn;
 
 public interface ITurn
 {
-	
 	public void addTurn();
 
     public void set(int turn);

@@ -1,7 +1,7 @@
 package com.example.examplemod.proxy;
 
 import com.example.examplemod.ExampleMod;
-import com.example.examplemod.common.core.EventHandlerCommon;
+import com.example.examplemod.common.event.EventHandlerCommon;
 import com.example.examplemod.init.ModCapabilities;
 import com.example.examplemod.init.ModRegistry;
 

@@ -11,7 +11,7 @@ public class WorldTurn extends WorldSavedData
 {
 	private static final String DATA_NAME = Ref.MODID + "_WorldTurn";
 	
-	private int worldTurns = 1;
+	private int worldTurns = 0;
 	
 	public WorldTurn() 
 	{

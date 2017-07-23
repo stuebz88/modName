@@ -1,4 +1,4 @@
-package com.example.examplemod.common.core.turn;
+package com.example.examplemod.common.caps;
 
 import javax.annotation.Nullable;
 
