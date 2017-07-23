@@ -1,10 +1,10 @@
 package com.example.examplemod.common.map.tile;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.example.examplemod.Ref;
-import com.example.examplemod.common.map.tile.TilePos;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,7 +16,7 @@ public class TileList extends WorldSavedData
 {
 private static final String DATA_NAME = Ref.MODID + "_EmpireList";
 	
-	private Map<TilePos, Tile> tiles;
+	private Map<TilePos, Tile> tiles = new LinkedHashMap<TilePos, Tile>();
 	private static World world;
 	
 	public TileList()
