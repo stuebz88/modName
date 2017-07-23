@@ -9,12 +9,15 @@ import com.example.examplemod.common.map.tile.Tile;
 import com.example.examplemod.common.map.tile.TileList;
 import com.example.examplemod.common.map.tile.TilePos;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -33,8 +36,8 @@ public class EventHandlerCommon
 		if(!world.isRemote)
 		{
 			WorldTurn.get(world);
+			TileList.get(world);
 		}
-		world.getWorldType();
 	}
 	
 	@SubscribeEvent
@@ -65,7 +68,6 @@ public class EventHandlerCommon
 			{
 			
 				long totalTime = world.getWorldTime();
-				System.out.println(totalTime);
 				long currentTime = totalTime % 24000;
 			
 				if(currentTime == 1)
@@ -100,9 +102,27 @@ public class EventHandlerCommon
 		TileList tileList = TileList.get(world);
 		
 		TilePos tilePos = new TilePos(chunk.getPos());
+		//System.out.println("===========Created tiles pos "+tilePos.x+" "+tilePos.z+"==========");/////////////////
 		if(tileList.getTileByPos(tilePos)==null)
 		{
 			Tile tile = new Tile(chunk);
 		}
 	}
+	
+	 @SubscribeEvent
+	 public void onDebugOverlay(RenderGameOverlayEvent.Text e)
+	 {
+		 //if(e.getType() == RenderGameOverlayEvent.ElementType.DEBUG)
+		 {
+			 int playerx = Minecraft.getMinecraft().player.chunkCoordX;
+			 int playerz = Minecraft.getMinecraft().player.chunkCoordZ;
+			 ChunkPos chunkPos = new ChunkPos(playerx,playerz);
+			 TilePos tilePos = new TilePos(chunkPos);
+			 TileList tileList = TileList.get(Minecraft.getMinecraft().player.world);
+			 e.getRight().add("Chunk coords:"+playerx+" "+playerz);
+			 e.getRight().add("Tile information:");
+			 
+			 e.getRight().add(tileList.getTileByPos(tilePos)==null ? "Tile " +tilePos.x+" "+tilePos.z+ "not created properly" : tilePos.x+" "+tilePos.z);
+		 }
+	 }
 }

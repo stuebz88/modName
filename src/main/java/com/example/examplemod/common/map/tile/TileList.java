@@ -1,8 +1,7 @@
 package com.example.examplemod.common.map.tile;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.example.examplemod.Ref;
 
@@ -16,7 +15,7 @@ public class TileList extends WorldSavedData
 {
 private static final String DATA_NAME = Ref.MODID + "_EmpireList";
 	
-	private Map<TilePos, Tile> tiles = new LinkedHashMap<TilePos, Tile>();
+	private TreeMap<TilePos, Tile> tiles = new TreeMap<TilePos, Tile>();
 	private static World world;
 	
 	public TileList()
@@ -29,7 +28,7 @@ private static final String DATA_NAME = Ref.MODID + "_EmpireList";
 		super(s);
 	}
 
-	public Tile getTileByPos (TilePos pos)
+	public Tile getTileByPos(TilePos pos)
 	{
 		return tiles.get(pos);
 	}
@@ -38,7 +37,7 @@ private static final String DATA_NAME = Ref.MODID + "_EmpireList";
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
 		NBTTagList list = (NBTTagList)nbt.getTag("tiles");
-		tiles = new HashMap<TilePos,Tile>();
+		tiles = new TreeMap<TilePos,Tile>();
 		
 		for(int i=0; i<list.tagCount(); i++)
 		{

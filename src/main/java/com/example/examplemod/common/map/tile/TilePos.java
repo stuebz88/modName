@@ -2,15 +2,58 @@ package com.example.examplemod.common.map.tile;
 
 import net.minecraft.util.math.ChunkPos;
 
-public class TilePos
+public class TilePos implements Comparable<TilePos>
 {
-	int x = 0;
-	int z = 0;
+	public int x = 0;
+	public int z = 0;
 	
 	public TilePos(int x, int z) 
 	{
 		this.x = x;
 		this.z = z;
+	}
+	
+	@Override
+	public int compareTo(TilePos comparing)
+	{
+		int sum1 = this.x+this.z;
+		int sum2 = comparing.x+comparing.z;
+		if(sum1<sum2)
+		{
+			return -1;
+		}
+		else if(sum1>sum2)
+		{
+			return 1;
+		}
+		else
+		{
+			if(this.x<comparing.x)
+			{
+				return -1;
+			}
+			else if(this.x>comparing.x)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+	
+	public boolean equals(TilePos comparing)
+	{
+		return this.x == comparing.x && this.z == comparing.z;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof TilePos)) return false;
+		TilePos tp = (TilePos)o;
+		return this.x==tp.x && this.z==tp.z;
 	}
 	
 	public TilePos(ChunkPos chunkPos)
