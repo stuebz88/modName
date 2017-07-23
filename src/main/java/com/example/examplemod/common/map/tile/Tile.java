@@ -2,10 +2,12 @@ package com.example.examplemod.common.map.tile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import com.example.examplemod.common.core.empire.Empire;
+import com.example.examplemod.common.core.empire.EmpireList;
 import com.example.examplemod.common.core.empire.Resource;
 import com.example.examplemod.common.core.turn.WorldTurn;
 
@@ -16,12 +18,12 @@ import net.minecraft.world.chunk.Chunk;
 public class Tile 
 {
 	private final TilePos tilePosition;
-	private final Chunk[][] chunks;
+	private final ChunkPos[][] chunks;
 	private final World world;
 	private EnumTileType tileType;
-	private Map<Resource, Integer> resources = null;
+	private Map<UUID, Integer> resources = null;
 	private boolean isOwned = false;
-	private Map<Empire, List<Integer>> owners = null;
+	private Map<UUID, List<Integer>> owners = null;
 	
 	public enum EnumTileType
 	{
@@ -117,24 +119,24 @@ public class Tile
 		return true;
 	}
 	
-	public Map<Resource, Integer> getResources()
+	public Map<UUID, Integer> getResources()
 	{
 		return this.resources;
 	}
 	
-	public Map<Empire, List<Integer>> getAllOwners()
+	public Map<UUID, List<Integer>> getAllOwners()
 	{
 		
 		return this.owners;
 	}
 	
-	public Empire getCurrentOwner()
+	public UUID getCurrentOwnerID()
 	{
-		Empire currentOwner = null;
+		UUID currentOwner = null;
 		
 		if(!this.isOwned) return null;
 		
-		for (Map.Entry<Empire, List<Integer>> entry : this.owners.entrySet())
+		for (Map.Entry<UUID, List<Integer>> entry : this.owners.entrySet())
 		{
 			List<Integer> entryValue = entry.getValue();
 			int entryValueSize = entry.getValue().size();
@@ -154,6 +156,11 @@ public class Tile
 		}
 		
 		return currentOwner;
+	}
+	
+	public Empire getCurrentOwner()
+	{
+		return EmpireList.get(this.world).getEmpireByID(this.getCurrentOwnerID());
 	}
 	
 	public TilePos getTilePos()
