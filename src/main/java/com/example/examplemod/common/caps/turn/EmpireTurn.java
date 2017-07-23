@@ -1,5 +1,7 @@
 package com.example.examplemod.common.caps.turn;
 
+import java.util.UUID;
+
 import com.example.examplemod.common.core.turn.WorldTurn;
 
 import net.minecraft.world.World;
@@ -8,10 +10,10 @@ public class EmpireTurn implements ITurn
 {
 	private int turn = 0;
 	private int startingTurn = 0;
-	private int empireID;
+	private UUID empireID;
 	private World world;
 	
-	public EmpireTurn(World world, int empireID)
+	public EmpireTurn(World world, UUID empireID)
 	{
 		this.turn = 1;
 		this.startingTurn = WorldTurn.get(world).getTurn();
@@ -38,7 +40,7 @@ public class EmpireTurn implements ITurn
 		return this.world;
 	}
 
-	public int getEmpireID()
+	public UUID getEmpireID()
 	{
 		return this.empireID;
 	}

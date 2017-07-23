@@ -87,7 +87,7 @@ public class Empire
 		this.empireName = name;
 	}
 	
-	public Map<Integer, Integer> getCities()
+	public Map<UUID, Integer> getCities()
 	{
 		return this.cityList;
 	}
@@ -117,7 +117,7 @@ public class Empire
 		return this.empireTurn;
 	}
 	
-	public Map<Integer, Integer> getVassals()
+	public Map<UUID, Integer> getVassals()
 	{
 		return this.vassalList;
 	}
@@ -127,7 +127,7 @@ public class Empire
 		return this.empireName;
 	}
 	
-	public int getID()
+	public UUID getID()
 	{
 		return this.empireID;
 	}
@@ -151,7 +151,8 @@ public class Empire
 	{
 		NBTTagCompound nbt;
 		
-		nbt.setInteger("empireID", this.empireID);
+		nbt.setLong("empireID1", this.empireID.getMostSignificantBits());
+		nbt.setLong("empireID2", this.empireID.getLeastSignificantBits());
 		nbt.setBoolean("empireExists", this.exists);
 		nbt.setString("empireName", this.empireName);
 		nbt = this.empireTurn.writeToNBT(nbt, externalID);

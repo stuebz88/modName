@@ -1,7 +1,7 @@
 package com.example.examplemod.common.core.empire;
 
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.example.examplemod.Ref;
 
@@ -15,7 +15,7 @@ public class EmpireList extends WorldSavedData
 {
 	private static final String DATA_NAME = Ref.MODID + "_EmpireList";
 	
-	private Map<Integer, Empire> empires;
+	private Map<UUID, Empire> empires;
 	
 	public EmpireList()
 	{
@@ -27,7 +27,7 @@ public class EmpireList extends WorldSavedData
 		super(s);
 	}
 
-	public Empire getEmpireByID (int empireID)
+	public Empire getEmpireByID (UUID empireID)
 	{
 		return empires.get(empireID);
 	}
@@ -40,12 +40,14 @@ public class EmpireList extends WorldSavedData
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) 
 	{
-		NBTTagList list;
-		
+		NBTTagList list = new NBTTagList();
+
 		for(Map.Entry<Integer, Empire> entry : empires.entrySet())
 		{
 			list.appendTag(entry.getValue().writeToNBT());
 		}
+		
+		nbt.setTag("empires", list);
 		return nbt;
 	}
 	
@@ -56,9 +58,9 @@ public class EmpireList extends WorldSavedData
 	
 	public boolean addEmpire(Empire empire)
 	{
-		markDirty();
 		if (empires.containsValue(empire)) return false;
 		
+		markDirty();
 		empires.put(empire.getID(), empire);
 		return true;
 	}
