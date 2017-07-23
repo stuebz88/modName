@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import com.example.examplemod.common.caps.turn.CapPlayerTurn;
 import com.example.examplemod.common.caps.turn.ITurn;
 import com.example.examplemod.common.core.turn.WorldTurn;
+import com.example.examplemod.common.map.tile.Tile;
+import com.example.examplemod.common.map.tile.TileList;
+import com.example.examplemod.common.map.tile.TilePos;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -87,5 +92,17 @@ public class EventHandlerCommon
 		}
 	}
 	
-	
+	@SubscribeEvent
+	public void onChunkLoad(ChunkEvent.Load e)
+	{
+		World world = e.getWorld();
+		Chunk chunk = e.getChunk();
+		TileList tileList = TileList.get(world);
+		
+		TilePos tilePos = new TilePos(chunk.getPos());
+		if(tileList.getTileByPos(tilePos)==null)
+		{
+			Tile tile = new Tile(chunk);
+		}
+	}
 }
