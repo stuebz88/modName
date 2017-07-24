@@ -106,7 +106,10 @@ public class EventHandlerCommon
 		
 		if(tileList.getTileByPos(tilePos)==null)
 		{
-			// Check if all chunks are loaded before creating the tile
+			// Check if all chunks are loaded before creating the tile.
+			// As of right now, null pointers are thrown if not all chunks are loaded
+			// because chunks have to be loaded to get biome information for them.
+			// Need to figure out a way to force-load chunks before checking biomes.
 			for(int i=0; i<4; i++)
 			{
 				for(int j=0; j<4; j++)
