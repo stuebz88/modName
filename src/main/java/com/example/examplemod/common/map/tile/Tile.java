@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.example.examplemod.common.core.empire.Empire;
 import com.example.examplemod.common.core.turn.WorldTurn;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -16,23 +17,10 @@ import net.minecraft.world.chunk.Chunk;
 
 public class Tile 
 {
-	public enum EnumTileType
-	{
-		PLAINS("plains"),
-		CITY("city");
-		
-		private String typeName;
-		
-		private EnumTileType(String s)
-		{
-			typeName = s;
-		}
-	}
-	
 	private final World world;
 	private final TilePos tilePosition;
 	private final ChunkPos[][] chunks;
-	private EnumTileType tileType;
+	private TileEnum.Biome biome;
 	private Map<UUID, Integer> resources = null;
 	private boolean isOwned = false;
 	private ArrayList<UUID> owners = new ArrayList<UUID>();
@@ -43,17 +31,17 @@ public class Tile
 		this.tilePosition = new TilePos(chunk.getPos());
 		this.world = chunk.getWorld();
 		this.chunks = this.createChunkArray();
-		this.tileType = this.generateTileType();
-		this.generateResources();
+		this.biome = generateTileBiome();
+		this.generateTileBiome();
 		TileList.get(world).addTile(this);
 	}
 	
-	private Tile(World world, int x, int z, EnumTileType tileType, boolean isOwned, ArrayList<UUID> owners, ArrayList<ArrayList<Integer>> ownersTime)
+	private Tile(World world, int x, int z, TileEnum.Biome biome, boolean isOwned, ArrayList<UUID> owners, ArrayList<ArrayList<Integer>> ownersTime)
 	{
 		this.world = world;
 		this.tilePosition = new TilePos(x,z);
 		this.chunks = createChunkArray();
-		this.tileType = tileType;
+		this.biome = biome;
 		this.isOwned = isOwned;
 		this.owners = owners;
 		this.ownersTime = ownersTime;
@@ -78,18 +66,53 @@ public class Tile
 		return chunkArray;
 	}
 	
-	private EnumTileType generateTileType()
+	public static ChunkPos[][] createChunkArray(TilePos tilePosition)
 	{
-		return EnumTileType.PLAINS;
+		ChunkPos[][] chunkArray = new ChunkPos[4][4];
+		
+		for(int i=0; i<4; i++)
+		{
+			for(int j=0; j<4; j++)
+			{
+				int chunkZ = tilePosition.z * 4 + j;
+				int chunkX = tilePosition.x * 4 - 2 * (tilePosition.z % 2);
+				
+				chunkArray[i][j] = new ChunkPos(chunkX, chunkZ);
+			}
+		}
+		
+		return chunkArray;
 	}
 	
-	private void generateResources()
+	private TileEnum.Biome generateTileBiome()
 	{
-		switch(this.tileType)
+		int[] freq = new int[167];
+		int max = 0;
+		int maxBiome = 0;
+		for(int i=0; i<4; i++)
 		{
-		case PLAINS: return;
-		case CITY: return;
+			for(int j=0; j<4; j++)
+			{
+				try 
+				{
+					byte[] currChunkBiomes = 
+					Minecraft.getMinecraft().world.getChunkFromChunkCoords(chunks[i][j].x,chunks[i][j].z).getBiomeArray();
+					
+					for(int k=0; k<64; k++)
+					{
+						freq[currChunkBiomes[k]]++;
+						if (freq[currChunkBiomes[k]]>max)
+						{
+							max = freq[currChunkBiomes[k]];
+							maxBiome = currChunkBiomes[k];
+						}
+					}
+				} 
+				// This  is catching ArrayIndexOutOfBoundsException for using -1 somehow
+				catch (Exception e) {}
+			}
 		}
+		return maxBiome==1 ? TileEnum.Biome.PLAINS : TileEnum.Biome.NONE;
 	}
 	
 	public ChunkPos[][] getChunks()
@@ -102,9 +125,9 @@ public class Tile
 		return this.world;
 	}
 	
-	public EnumTileType getTileType()
+	public TileEnum.Biome getTileBiome()
 	{
-		return this.tileType;
+		return this.biome;
 	}
 	
 	public boolean setOwnership(Empire empire, int turn) {
@@ -160,7 +183,7 @@ public class Tile
 	{
 		int x = nbt.getInteger("x");
 		int z = nbt.getInteger("z");
-		EnumTileType tileType = EnumTileType.values()[nbt.getInteger("type")];
+		TileEnum.Biome tileType = TileEnum.Biome.values()[nbt.getInteger("type")];
 		boolean isOwned = nbt.getBoolean("isOwned");
 		int owners_size = nbt.getInteger("owners.size");
 		
@@ -187,7 +210,7 @@ public class Tile
 	{
 		nbt.setInteger("x",this.tilePosition.x);
 		nbt.setInteger("z",this.tilePosition.z);
-		nbt.setInteger("type",this.tileType.ordinal());
+		nbt.setInteger("type",this.biome.ordinal());
 		nbt.setBoolean("isOwned",this.isOwned);
 		nbt.setInteger("owners.size",this.owners.size());
 

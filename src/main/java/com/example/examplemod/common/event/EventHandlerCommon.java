@@ -102,9 +102,22 @@ public class EventHandlerCommon
 		TileList tileList = TileList.get(world);
 		
 		TilePos tilePos = new TilePos(chunk.getPos());
-		//System.out.println("===========Created tiles pos "+tilePos.x+" "+tilePos.z+"==========");/////////////////
+		ChunkPos[][] chunks = Tile.createChunkArray(tilePos);
+		
 		if(tileList.getTileByPos(tilePos)==null)
 		{
+			// Check if all chunks are loaded before creating the tile
+			for(int i=0; i<4; i++)
+			{
+				for(int j=0; j<4; j++)
+				{
+					if(!world.getChunkProvider().isChunkGeneratedAt(chunks[i][j].x,chunks[i][j].z))
+					{
+						return;
+					}
+				}
+			}
+			System.out.println("Adding new tile - x: "+tilePos.x+" z: "+tilePos.z); //////////////////
 			Tile tile = new Tile(chunk);
 		}
 	}
@@ -114,15 +127,22 @@ public class EventHandlerCommon
 	 {
 		 //if(e.getType() == RenderGameOverlayEvent.ElementType.DEBUG)
 		 {
-			 int playerx = Minecraft.getMinecraft().player.chunkCoordX;
-			 int playerz = Minecraft.getMinecraft().player.chunkCoordZ;
-			 ChunkPos chunkPos = new ChunkPos(playerx,playerz);
-			 TilePos tilePos = new TilePos(chunkPos);
-			 TileList tileList = TileList.get(Minecraft.getMinecraft().player.world);
-			 e.getRight().add("Chunk coords:"+playerx+" "+playerz);
-			 e.getRight().add("Tile information:");
-			 
-			 e.getRight().add(tileList.getTileByPos(tilePos)==null ? "Tile " +tilePos.x+" "+tilePos.z+ "not created properly" : tilePos.x+" "+tilePos.z);
+			 try {
+				 int playerx = Minecraft.getMinecraft().player.chunkCoordX;
+				 int playerz = Minecraft.getMinecraft().player.chunkCoordZ;
+				 ChunkPos chunkPos = new ChunkPos(playerx,playerz);
+				 TilePos tilePos = new TilePos(chunkPos);
+				 TileList tileList = TileList.get(Minecraft.getMinecraft().player.world);
+				 e.getRight().add("Chunk coords:"+playerx+" "+playerz);
+				 e.getRight().add("Tile information:");
+				 
+				 Tile currTile = tileList.getTileByPos(tilePos);
+				 
+				 e.getRight().add(currTile==null ? "Tile " +tilePos.x+" "+tilePos.z+ "not created properly" : tilePos.x+" "+tilePos.z);
+				 e.getRight().add("Tile biome: "+currTile.getTileBiome().name());
+			 }
+			 catch (Exception e1) {}
+				 
 		 }
 	 }
 }

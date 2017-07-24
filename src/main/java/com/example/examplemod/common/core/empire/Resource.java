@@ -1,5 +1,6 @@
 package com.example.examplemod.common.core.empire;
 
-public class Resource {
+public class Resource
+{
 
 }
