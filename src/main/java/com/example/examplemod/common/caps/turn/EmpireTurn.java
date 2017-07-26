@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.example.examplemod.common.core.turn.WorldTurn;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EmpireTurn implements ITurn
@@ -55,5 +56,15 @@ public class EmpireTurn implements ITurn
 	public int getStartingTurn() 
 	{
 		return this.startingTurn;
+	}
+	
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+	{
+		return null;
+	}
+	
+	public static EmpireTurn readFromNBT(NBTTagCompound nbt)
+	{
+		return null;
 	}
 }
