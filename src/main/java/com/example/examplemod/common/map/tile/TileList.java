@@ -13,7 +13,8 @@ import net.minecraft.world.storage.WorldSavedData;
 
 public class TileList extends WorldSavedData
 {
-private static final String DATA_NAME = Ref.MODID + "_EmpireList";
+
+	private static final String DATA_NAME = Ref.MODID + "_TileList";
 	
 	private TreeMap<TilePos, Tile> tiles = new TreeMap<TilePos, Tile>();
 	private static World world;

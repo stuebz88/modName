@@ -2,6 +2,7 @@ package com.example.examplemod.common.event;
 
 import java.util.ArrayList;
 
+import com.example.examplemod.common.blocks.BlockModBanner;
 import com.example.examplemod.common.caps.turn.CapPlayerTurn;
 import com.example.examplemod.common.caps.turn.ITurn;
 import com.example.examplemod.common.core.turn.WorldTurn;
@@ -18,12 +19,14 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 public class EventHandlerCommon 
 {
@@ -114,8 +117,15 @@ public class EventHandlerCommon
 			{
 				for(int j=0; j<4; j++)
 				{
-					if(!world.getChunkProvider().isChunkGeneratedAt(chunks[i][j].x,chunks[i][j].z))
+					int x = chunks[i][j].x;
+					int z = chunks[i][j].z;
+					if(!world.getChunkProvider().isChunkGeneratedAt(x,z))
 					{
+						try
+						{
+							((ChunkProviderServer)(world.getChunkProvider())).chunkLoader.loadChunk(world, x, z);
+						}
+						catch (Exception e1) {}
 						return;
 					}
 				}
@@ -146,6 +156,15 @@ public class EventHandlerCommon
 			 }
 			 catch (Exception e1) {}
 				 
+		 }
+	 }
+	 
+	 @SubscribeEvent
+	 public void onBlockPlaced(BlockEvent.PlaceEvent e)
+	 {
+		 if(e.getPlacedBlock().getBlock() instanceof BlockModBanner)
+		 {
+			 
 		 }
 	 }
 }
