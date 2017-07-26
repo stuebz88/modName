@@ -1,5 +1,7 @@
 package com.example.examplemod.common.caps.empire;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import com.example.examplemod.Ref;
@@ -36,14 +38,15 @@ public class CapPlayerEmpire
 				@Override
 				public NBTBase writeNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side) {
 					NBTTagCompound data = new NBTTagCompound();
-					
-					data.setString("")
+					data.setLong("id1",instance.getUUID().getMostSignificantBits());
+					data.setLong("id2",instance.getUUID().getLeastSignificantBits());
 					return data;
 				}
 
 				@Override
 				public void readNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side, NBTBase nbt) {
-					instance.set(((NBTTagInt) nbt).getInt());
+					NBTTagCompound nbtc = (NBTTagCompound)nbt;
+					instance.setUUID(new UUID(nbtc.getLong("id1"),nbtc.getLong("id2")));
 				}
 			}, () -> new PlayerEmpire(null));
 
@@ -106,7 +109,7 @@ public class CapPlayerEmpire
 				final IEmpire newEmpire = getEmpire(e.getEntityPlayer());
 
 				if (newEmpire != null && oldEmpire != null) {
-					newEmpire.set(oldEmpire.getEmpire());
+					newEmpire.setUUID(oldEmpire.getUUID());
 				}
 			}
 		}

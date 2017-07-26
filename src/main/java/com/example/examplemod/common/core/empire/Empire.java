@@ -3,13 +3,12 @@ package com.example.examplemod.common.core.empire;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
+import com.example.examplemod.common.caps.empire.IEmpire;
 import com.example.examplemod.common.caps.turn.EmpireTurn;
 import com.example.examplemod.common.core.city.City;
 import com.example.examplemod.common.core.turn.WorldTurn;
 import com.example.examplemod.common.map.tile.Tile;
-import com.example.examplemod.common.map.tile.Tile.TilePos;
+import com.example.examplemod.common.map.tile.TilePos;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,7 +59,7 @@ public class Empire
 		if(!this.canAddVassal(empire.getEmpireValue())) return false;
 		WorldTurn worldTurn = WorldTurn.get(this.empireWorld);
 		
-		vassalList.put(empire.getID(),worldTurn.getTurn());
+		vassalList.put(empire.getUUID(),worldTurn.getTurn());
 		return true;
 	}
 	
@@ -127,7 +126,7 @@ public class Empire
 		return this.empireName;
 	}
 	
-	public UUID getID()
+	public UUID getUUID()
 	{
 		return this.empireID;
 	}
