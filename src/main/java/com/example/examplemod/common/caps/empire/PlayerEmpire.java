@@ -14,7 +14,7 @@ public class PlayerEmpire implements IEmpire
 	public PlayerEmpire(@Nullable EntityPlayer player)
 	{
 		this.player = player;
-		this.empireUUID = UUID.randomUUID();
+		//this.empireUUID = UUID.randomUUID();
 	}
 	
 	public void setUUID(UUID empireUUID) 

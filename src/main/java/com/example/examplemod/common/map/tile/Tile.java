@@ -143,6 +143,11 @@ public class Tile
 		return maxBiome==1 ? TileEnum.Biome.PLAINS : TileEnum.Biome.NONE;
 	}
 	
+	public boolean isOwned()
+	{
+		return isOwned;
+	}
+	
 	public ArrayList<UUID> getAllOwners()
 	{
 		return this.owners;

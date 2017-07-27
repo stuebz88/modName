@@ -1,9 +1,9 @@
 package com.example.examplemod.common.core.empire;
 
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
-import com.example.examplemod.common.caps.empire.IEmpire;
 import com.example.examplemod.common.caps.turn.EmpireTurn;
 import com.example.examplemod.common.core.city.City;
 import com.example.examplemod.common.core.turn.WorldTurn;
@@ -16,16 +16,16 @@ import net.minecraft.world.World;
 
 public class Empire
 {
+	private Map<UUID, Integer> cities = new TreeMap<UUID, Integer>();
 	private UUID empireID;
-	private boolean exists = false;
 	private String empireName = "";
-	private World empireWorld = null;
 	private EmpireTurn empireTurn = null;
-	private Map<Integer, String> playerList = null;
-	private Map<UUID, Long> resources = null;
-	private Map<TilePos, Integer> territory = null;
-	private Map<UUID, Integer> vassalList = null;
-	private Map<UUID, Integer> cityList = null;
+	private World empireWorld;
+	private boolean exists = false;
+	private Map<Integer, String> players = new TreeMap<Integer, String>();
+	private Map<UUID, Long> resources = new TreeMap<UUID, Long>();
+	private Map<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
+	private Map<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
 	
 	public Empire(String empireName, World world, EntityPlayer player, String playerTitle, Map<UUID, Long> startingResources, Tile tile)
 	{
@@ -37,12 +37,80 @@ public class Empire
 		this.empireName = empireName;
 		this.empireWorld = world;
 		this.empireTurn = new EmpireTurn(world, this.empireID);
-		this.playerList.put(player.getEntityId(), playerTitle);
+		this.players.put(player.getEntityId(), playerTitle);
 		this.resources.putAll(startingResources);
-		this.territory.put(tile.getTilePos(), turn);
+		this.tiles.put(tile.getTilePos(), turn);
 		
-		//EmpireList.get(world).addEmpire(this);
-		tile.setOwnership(this, turn);
+		EmpireList.get(world).addEmpire(this);
+		tile.setOwnership(empireID, turn);
+	}
+	
+	private Empire(UUID empireID, boolean empireExists, String empireName, EmpireTurn empireTurn, Map<Integer, String> players, Map<UUID, Long> resources, Map<TilePos, Integer> tiles, Map<UUID, Integer> vassals, Map<UUID, Integer> cities, World world)
+	{
+		this.empireID = empireID;
+		this.exists = empireExists;
+		this.empireName = empireName;
+		this.empireWorld = world;
+		this.empireTurn = empireTurn;
+		this.players = players;
+		this.resources = resources;
+		this.tiles = tiles;
+		this.vassals = vassals;
+		this.cities = cities;
+		
+		EmpireList.get(world).addEmpire(this);
+	}
+	
+	public static void readFromNBT (NBTTagCompound nbt, World world)
+	{
+		UUID empireID = new UUID(nbt.getLong("empireID1"), nbt.getLong("empireID2"));
+		boolean empireExists = nbt.getBoolean("empireExists");
+		String empireName = nbt.getString("empireName");
+		EmpireTurn empireTurn = EmpireTurn.readFromNBT(nbt);
+		
+		int playerListSize = nbt.getInteger("playerListSize");
+		Map<Integer, String> players = new TreeMap<Integer, String>();
+		for(int i = 0; i < playerListSize; i++)
+		{
+			players.put(nbt.getInteger("#player" + i), nbt.getString("@player" + i));
+		}
+		
+		int resourceListSize = nbt.getInteger("resourceListSize");
+		Map<UUID, Long> resources = new TreeMap<UUID, Long>();
+		for(int i = 0; i < resourceListSize; i++)
+		{
+			UUID resourceID = new UUID(nbt.getLong("resource" + i + "_ID1"), nbt.getLong("resource" + i + "_ID2"));
+			resources.put(resourceID, nbt.getLong("resource" + i + "_amount"));
+		}
+		
+		int territorySize = nbt.getInteger("territorySize");
+		Map<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
+		for(int i = 0; i < territorySize; i++)
+		{
+			String tileID = "#tile_" + i;
+			TilePos tilePos = new TilePos(nbt.getInteger(tileID + "X"), nbt.getInteger(tileID + "Z"));
+			tiles.put(tilePos, nbt.getInteger(tileID + "_length"));
+		}
+		
+		int vassalListSize = nbt.getInteger("vassalListSize");
+		Map<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
+		for(int i = 0; i < vassalListSize; i++)
+		{
+			String vassalID = "#vassal_" + i;
+			UUID vassalUUID = new UUID(nbt.getLong(vassalID + "_ID1"), nbt.getLong(vassalID + "_ID2"));
+			vassals.put(vassalUUID, nbt.getInteger(vassalID + "_length"));
+		}
+		
+		int cityListSize = nbt.getInteger("cityListSize");
+		Map<UUID, Integer> cities = new TreeMap<UUID, Integer>();
+		for(int i = 0; i < cityListSize; i++)
+		{
+			String cityID = "#city_" + i;
+			UUID cityUUID = new UUID(nbt.getLong(cityID + "_ID1"), nbt.getLong(cityID + "_ID2"));
+			cities.put(cityUUID, nbt.getInteger(cityID + "_length"));
+		}
+		
+		new Empire(empireID, empireExists, empireName, empireTurn, players, resources, tiles, vassals, cities, world);
 	}
 	
 	public boolean addCity(City city)
@@ -50,16 +118,7 @@ public class Empire
 		if(!this.canAddCity()) return false;
 		WorldTurn worldTurn = WorldTurn.get(this.empireWorld);
 		
-		cityList.put(city.getID(), worldTurn.getTurn());
-		return true;
-	}
-	
-	public boolean addVassal(Empire empire)
-	{
-		if(!this.canAddVassal(empire.getEmpireValue())) return false;
-		WorldTurn worldTurn = WorldTurn.get(this.empireWorld);
-		
-		vassalList.put(empire.getUUID(),worldTurn.getTurn());
+		cities.put(city.getID(), worldTurn.getTurn());
 		return true;
 	}
 	
@@ -71,9 +130,13 @@ public class Empire
 		}
 	}
 	
-	public boolean canAddVassal(int empireValue)
+	public boolean addVassal(Empire empire)
 	{
-		return false;
+		if(!this.canAddVassal(empire.getEmpireValue())) return false;
+		WorldTurn worldTurn = WorldTurn.get(this.empireWorld);
+		
+		vassals.put(empire.getID(),worldTurn.getTurn());
+		return true;
 	}
 	
 	public boolean canAddCity()
@@ -81,24 +144,19 @@ public class Empire
 		return true;
 	}
 	
+	public boolean canAddVassal(int empireValue)
+	{
+		return false;
+	}
+	
 	public void changeName(String name)
 	{
 		this.empireName = name;
 	}
 	
-	public Map<UUID, Integer> getCities()
+	public void destroyEmpire()
 	{
-		return this.cityList;
-	}
-	
-	public int getMaximumVassalSize()
-	{
-		return 0;
-	}
-	
-	public int getEmpireValue()
-	{
-		return 0;
+		this.exists = false;
 	}
 	
 	public boolean empireExists()
@@ -106,9 +164,9 @@ public class Empire
 		return this.exists;
 	}
 	
-	public long getResourceValue(Resource resource)
+	public Map<UUID, Integer> getCities()
 	{
-		return this.resources.get(resource) != null ? this.resources.get(resource) : 0L;
+		return this.cities;
 	}
 	
 	public EmpireTurn getEmpireTurn()
@@ -116,9 +174,19 @@ public class Empire
 		return this.empireTurn;
 	}
 	
-	public Map<UUID, Integer> getVassals()
+	public int getEmpireValue()
 	{
-		return this.vassalList;
+		return 0;
+	}
+	
+	public UUID getID()
+	{
+		return this.empireID;
+	}
+	
+	public int getMaximumVassalSize()
+	{
+		return 0;
 	}
 	
 	public String getName()
@@ -126,19 +194,19 @@ public class Empire
 		return this.empireName;
 	}
 	
-	public UUID getUUID()
-	{
-		return this.empireID;
-	}
-	
 	public Map<Integer, String> getPlayers()
 	{
-		return this.playerList;
+		return this.players;
 	}
 	
-	public void destroyEmpire()
+	public long getResourceValue(Resource resource)
 	{
-		this.exists = false;
+		return this.resources.get(resource) != null ? this.resources.get(resource) : 0L;
+	}
+	
+	public Map<UUID, Integer> getVassals()
+	{
+		return this.vassals;
 	}
 	
 	public void rebirthEmpire()
@@ -148,19 +216,19 @@ public class Empire
 	
 	public NBTTagCompound writeToNBT ()
 	{
-		NBTTagCompound nbt;
+		NBTTagCompound nbt = new NBTTagCompound();
 		
 		nbt.setLong("empireID1", this.empireID.getMostSignificantBits());
 		nbt.setLong("empireID2", this.empireID.getLeastSignificantBits());
 		nbt.setBoolean("empireExists", this.exists);
 		nbt.setString("empireName", this.empireName);
-		nbt = this.empireTurn.writeToNBT(nbt, externalID);
-		nbt.setInteger("playerListSize", this.playerList.size());
+		nbt = this.empireTurn.writeToNBT(nbt);
+		nbt.setInteger("playerListSize", this.players.size());
 		
-		if(this.playerList.size() > 0)
+		if(this.players.size() > 0)
 		{
 			int i = 0;
-			for(Map.Entry<Integer, String> entry : this.playerList.entrySet())
+			for(Map.Entry<Integer, String> entry : this.players.entrySet())
 			{
 				String playerNumber = "#player_" + i;
 				String playerPosition = "@player_" + i;
@@ -178,53 +246,59 @@ public class Empire
 			int i = 0;
 			for(Map.Entry<UUID, Long> entry : this.resources.entrySet())
 			{
-				String resourceID = "#resource_" + i;
-				nbt = entry.getKey().writeToNBT(nbt, resourceID);
-				nbt.setLong(resourceID + "_amount", entry.getValue());
+				String resourceID = "resource" + i;
+				
+				nbt.setLong(resourceID + "_ID1", entry.getKey().getMostSignificantBits());
+				nbt.setLong(resourceID + "_ID2", entry.getKey().getLeastSignificantBits());
+				nbt.setLong(resourceID + "_amount" + i, entry.getValue());
 				
 				i++;
 			}
 		}
 		
-		nbt.setInteger("territorySize", this.territory.size());
+		nbt.setInteger("territorySize", this.tiles.size());
 		
-		if(this.territory.size() > 0)
+		if(this.tiles.size() > 0)
 		{
 			int i = 0;
-			for(Map.Entry<Tile, Integer> entry : this.territory.entrySet())
+			for(Map.Entry<TilePos, Integer> entry : this.tiles.entrySet())
 			{
 				String tileID = "#tile_" + i;
-				nbt = entry.getKey().writeToNBT(nbt, tileID);
-				nbt.setLong(tileID + "_length", entry.getValue());
+				nbt.setInteger(tileID + "X", entry.getKey().x);
+				nbt.setInteger(tileID + "Z", entry.getKey().z);
+				nbt.setInteger(tileID + "_length", entry.getValue());
 				
 				i++;
 			}
 		}
 		
-		nbt.setInteger("vassalListSize", this.vassalList.size());
+		nbt.setInteger("vassalListSize", this.vassals.size());
 		
-		if(this.vassalList.size() > 0)
+		if(this.vassals.size() > 0)
 		{
 			int i = 0;
-			for(Map.Entry<Empire, Integer> entry : this.vassalList.entrySet())
+			for(Map.Entry<UUID, Integer> entry : this.vassals.entrySet())
 			{
 				String vassalID = "#vassal_" + i;
-				nbt = entry.getKey().writeToNBT(nbt, vassalID);
+				nbt.setLong(vassalID + "_ID1", entry.getKey().getMostSignificantBits());
+				nbt.setLong(vassalID + "_ID2", entry.getKey().getLeastSignificantBits());
 				nbt.setInteger(vassalID + "_length", entry.getValue());
 				
 				i++;
 			}
 		}
 		
-		nbt.setInteger("cityListSize", this.cityList.size());
-		
-		if(this.cityList.size() > 0)
+		nbt.setInteger("cityListSize", this.cities.size());
+	
+		if(this.cities.size() > 0)
 		{
 			int i = 0;
-			for(Map.Entry<City, Integer> entry : this.cityList.entrySet())
+			for(Map.Entry<UUID, Integer> entry : this.cities.entrySet())
 			{
 				String cityID = "#city_" + i;
-				nbt = entry.getKey().writeToNBT(nbt, cityID);
+				
+				nbt.setLong(cityID + "_ID1", entry.getKey().getMostSignificantBits());
+				nbt.setLong(cityID + "_ID2", entry.getKey().getLeastSignificantBits());
 				nbt.setInteger(cityID + "_length", entry.getValue());
 				
 				i++;
@@ -232,10 +306,5 @@ public class Empire
 		}
 		
 		return nbt;
-	}
-	
-	public static void readFromNBT (NBTTagCompound nbt)
-	{
-		
 	}
 }

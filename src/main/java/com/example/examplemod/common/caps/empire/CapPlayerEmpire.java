@@ -34,17 +34,23 @@ public class CapPlayerEmpire
 		public static final ResourceLocation ID = new ResourceLocation(Ref.MODID, "PlayerEmpire");
 
 		public static void register() {
-			CapabilityManager.INSTANCE.register(IEmpire.class, new Capability.IStorage<IEmpire>() {
+			CapabilityManager.INSTANCE.register(IEmpire.class, new Capability.IStorage<IEmpire>() 
+			{
 				@Override
-				public NBTBase writeNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side) {
+				public NBTBase writeNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side) 
+				{
 					NBTTagCompound data = new NBTTagCompound();
+					if(instance.getUUID() != null)
+					{
 					data.setLong("id1",instance.getUUID().getMostSignificantBits());
 					data.setLong("id2",instance.getUUID().getLeastSignificantBits());
+					}
 					return data;
 				}
 
 				@Override
-				public void readNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side, NBTBase nbt) {
+				public void readNBT(Capability<IEmpire> capability, IEmpire instance, EnumFacing side, NBTBase nbt) 
+				{
 					NBTTagCompound nbtc = (NBTTagCompound)nbt;
 					instance.setUUID(new UUID(nbtc.getLong("id1"),nbtc.getLong("id2")));
 				}
