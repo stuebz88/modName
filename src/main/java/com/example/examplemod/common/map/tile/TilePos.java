@@ -1,5 +1,6 @@
 package com.example.examplemod.common.map.tile;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
 public class TilePos implements Comparable<TilePos>
@@ -63,5 +64,10 @@ public class TilePos implements Comparable<TilePos>
 		
 		this.x = tileX;
 		this.z = tileZ;
+	}
+	
+	public TilePos(BlockPos blockPos)
+	{
+		this(new ChunkPos(blockPos));
 	}
 }

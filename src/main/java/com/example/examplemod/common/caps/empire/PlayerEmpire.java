@@ -1,26 +1,36 @@
 package com.example.examplemod.common.caps.empire;
 
-import com.example.examplemod.common.core.empire.Empire;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerEmpire implements IEmpire
 {
-	private Empire empire = null;
+	private UUID empireUUID = null;
+	private EntityPlayer player;
 	
-	@Override
-	public void setEmpire(Empire empire) 
+	public PlayerEmpire(@Nullable EntityPlayer player)
 	{
-		this.empire = empire;
+		this.player = player;
+		this.empireUUID = UUID.randomUUID();
 	}
-
-	@Override
-	public Empire getEmpire() 
+	
+	public void setUUID(UUID empireUUID) 
 	{
-		return this.empire;
+		this.empireUUID = empireUUID;
 	}
 
 	@Override
 	public void abandonEmpire() 
 	{
-		this.empire = null;
+		this.empireUUID = null;
+	}
+
+	@Override
+	public UUID getUUID() 
+	{
+		return empireUUID;
 	}
 }

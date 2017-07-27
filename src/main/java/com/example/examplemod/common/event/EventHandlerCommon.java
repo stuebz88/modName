@@ -158,13 +158,4 @@ public class EventHandlerCommon
 				 
 		 }
 	 }
-	 
-	 @SubscribeEvent
-	 public void onBlockPlaced(BlockEvent.PlaceEvent e)
-	 {
-		 if(e.getPlacedBlock().getBlock() instanceof BlockModBanner)
-		 {
-			 
-		 }
-	 }
 }
