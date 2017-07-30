@@ -1,5 +1,7 @@
 package com.example.examplemod.common.map.tile;
 
+import java.util.ArrayList;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
@@ -69,5 +71,116 @@ public class TilePos implements Comparable<TilePos>
 	public TilePos(BlockPos blockPos)
 	{
 		this(new ChunkPos(blockPos));
+	}
+	
+	public ChunkPos getIndexChunkPos()
+	{
+		int chunkZ = this.z * 4;
+		int chunkX = this.x * 4 - 2 * (this.z % 2);
+		return new ChunkPos(chunkX, chunkZ);
+	}
+	
+	public ArrayList<TilePos> getTilesInRange(int range)
+	{
+		if(range < 1) return null;
+		
+		ArrayList<TilePos> tilesInRange = new ArrayList<TilePos>();
+		ChunkPos indexChunkPos = this.getIndexChunkPos();
+		
+		for(int i = 0; i <= range ; i++)
+		{
+			for(int j = 0; j <= range ; j++)
+			{
+				int posposChunkX = indexChunkPos.x + i * 4;
+				int posposChunkZ = indexChunkPos.z + j * 4;
+				int posnegChunkX = indexChunkPos.x + i * 4;
+				int posnegChunkZ = indexChunkPos.z + j * -4;
+				int negposChunkX = indexChunkPos.x + i * -4;
+				int negposChunkZ = indexChunkPos.z + j * 4;
+				int negnegChunkX = indexChunkPos.x + i * -4;
+				int negnegChunkZ = indexChunkPos.z + j * -4;
+				
+				TilePos posposTile = new TilePos(new ChunkPos(posposChunkX, posposChunkZ));
+				TilePos posnegTile = new TilePos(new ChunkPos(posnegChunkX, posnegChunkZ));
+				TilePos negposTile = new TilePos(new ChunkPos(negposChunkX, negposChunkZ));
+				TilePos negnegTile = new TilePos(new ChunkPos(negnegChunkX, negnegChunkZ));
+				
+				if(!tilesInRange.contains(posposTile)) tilesInRange.add(posposTile);
+				if(!tilesInRange.contains(posnegTile)) tilesInRange.add(posnegTile);
+				if(!tilesInRange.contains(negposTile)) tilesInRange.add(negposTile);
+				if(!tilesInRange.contains(negnegTile)) tilesInRange.add(negnegTile);
+			}
+		}
+		
+		return tilesInRange;
+	}
+	
+	public static ArrayList<TilePos> getTilesInRangeOf(TilePos indexTilePos, int range)
+	{
+		if(range < 1) return null;
+		
+		ArrayList<TilePos> tilesInRange = new ArrayList<TilePos>();
+		ChunkPos indexChunkPos = indexTilePos.getIndexChunkPos();
+		
+		for(int i = 0; i <= range ; i++)
+		{
+			for(int j = 0; j <= range ; j++)
+			{
+				int posposChunkX = indexChunkPos.x + i * 4;
+				int posposChunkZ = indexChunkPos.z + j * 4;
+				int posnegChunkX = indexChunkPos.x + i * 4;
+				int posnegChunkZ = indexChunkPos.z + j * -4;
+				int negposChunkX = indexChunkPos.x + i * -4;
+				int negposChunkZ = indexChunkPos.z + j * 4;
+				int negnegChunkX = indexChunkPos.x + i * -4;
+				int negnegChunkZ = indexChunkPos.z + j * -4;
+				
+				TilePos posposTile = new TilePos(new ChunkPos(posposChunkX, posposChunkZ));
+				TilePos posnegTile = new TilePos(new ChunkPos(posnegChunkX, posnegChunkZ));
+				TilePos negposTile = new TilePos(new ChunkPos(negposChunkX, negposChunkZ));
+				TilePos negnegTile = new TilePos(new ChunkPos(negnegChunkX, negnegChunkZ));
+				
+				if(!tilesInRange.contains(posposTile)) tilesInRange.add(posposTile);
+				if(!tilesInRange.contains(posnegTile)) tilesInRange.add(posnegTile);
+				if(!tilesInRange.contains(negposTile)) tilesInRange.add(negposTile);
+				if(!tilesInRange.contains(negnegTile)) tilesInRange.add(negnegTile);
+			}
+		}
+		
+		return tilesInRange;
+	}
+	
+	public static ArrayList<TilePos> getTilesInRangeOf(ChunkPos indexChunkPos, int range)
+	{
+		if(range < 1) return null;
+		
+		ArrayList<TilePos> tilesInRange = new ArrayList<TilePos>();
+		
+		for(int i = 0; i <= range ; i++)
+		{
+			for(int j = 0; j <= range ; j++)
+			{
+				int posposChunkX = indexChunkPos.x + i * 4;
+				int posposChunkZ = indexChunkPos.z + j * 4;
+				int posnegChunkX = indexChunkPos.x + i * 4;
+				int posnegChunkZ = indexChunkPos.z + j * -4;
+				int negposChunkX = indexChunkPos.x + i * -4;
+				int negposChunkZ = indexChunkPos.z + j * 4;
+				int negnegChunkX = indexChunkPos.x + i * -4;
+				int negnegChunkZ = indexChunkPos.z + j * -4;
+				
+				TilePos posposTile = new TilePos(new ChunkPos(posposChunkX, posposChunkZ));
+				TilePos posnegTile = new TilePos(new ChunkPos(posnegChunkX, posnegChunkZ));
+				TilePos negposTile = new TilePos(new ChunkPos(negposChunkX, negposChunkZ));
+				TilePos negnegTile = new TilePos(new ChunkPos(negnegChunkX, negnegChunkZ));
+				
+				if(!tilesInRange.contains(posposTile)) tilesInRange.add(posposTile);
+				if(!tilesInRange.contains(posnegTile)) tilesInRange.add(posnegTile);
+				if(!tilesInRange.contains(negposTile)) tilesInRange.add(negposTile);
+				if(!tilesInRange.contains(negnegTile)) tilesInRange.add(negnegTile);
+			}
+		}
+		
+		return tilesInRange;
 	}
 }
