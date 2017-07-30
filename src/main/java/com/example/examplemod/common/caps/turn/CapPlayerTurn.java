@@ -28,8 +28,6 @@ public class CapPlayerTurn
 	
 	public static final EnumFacing DEFAULT_FACING = null;
 	
-	
-	
 	public static final ResourceLocation ID = new ResourceLocation(Ref.MODID, "PlayerTurn");
 
 	public static void register() {
