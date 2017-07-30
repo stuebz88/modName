@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import com.example.examplemod.common.caps.intelligence.EmpireIntelligence;
 import com.example.examplemod.common.caps.turn.EmpireTurn;
 import com.example.examplemod.common.core.city.City;
 import com.example.examplemod.common.core.turn.WorldTurn;
@@ -16,16 +17,17 @@ import net.minecraft.world.World;
 
 public class Empire
 {
-	private Map<UUID, Integer> cities = new TreeMap<UUID, Integer>();
+	private TreeMap<UUID, Integer> cities = new TreeMap<UUID, Integer>();
 	private UUID empireID;
+	private EmpireIntelligence empireIntelligence = new EmpireIntelligence();
 	private String empireName = "";
 	private EmpireTurn empireTurn = null;
 	private World empireWorld;
 	private boolean exists = false;
-	private Map<Integer, String> players = new TreeMap<Integer, String>();
-	private Map<UUID, Long> resources = new TreeMap<UUID, Long>();
-	private Map<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
-	private Map<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
+	private TreeMap<UUID, String> players = new TreeMap<UUID, String>();
+	private TreeMap<UUID, Long> resources = new TreeMap<UUID, Long>();
+	private TreeMap<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
+	private TreeMap<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
 	
 	public Empire(String empireName, World world, EntityPlayer player, String playerTitle, Map<UUID, Long> startingResources, Tile tile)
 	{
@@ -37,7 +39,7 @@ public class Empire
 		this.empireName = empireName;
 		this.empireWorld = world;
 		this.empireTurn = new EmpireTurn(world, this.empireID);
-		this.players.put(player.getEntityId(), playerTitle);
+		this.players.put(player.getUniqueID(), playerTitle);
 		this.resources.putAll(startingResources);
 		this.tiles.put(tile.getTilePos(), turn);
 		
@@ -45,7 +47,7 @@ public class Empire
 		tile.setOwnership(empireID, turn);
 	}
 	
-	private Empire(UUID empireID, boolean empireExists, String empireName, EmpireTurn empireTurn, Map<Integer, String> players, Map<UUID, Long> resources, Map<TilePos, Integer> tiles, Map<UUID, Integer> vassals, Map<UUID, Integer> cities, World world)
+	private Empire(UUID empireID, boolean empireExists, String empireName, EmpireTurn empireTurn, TreeMap<UUID, String> players, TreeMap<UUID, Long> resources, TreeMap<TilePos, Integer> tiles, TreeMap<UUID, Integer> vassals, TreeMap<UUID, Integer> cities, World world)
 	{
 		this.empireID = empireID;
 		this.exists = empireExists;
@@ -69,14 +71,16 @@ public class Empire
 		EmpireTurn empireTurn = EmpireTurn.readFromNBT(nbt);
 		
 		int playerListSize = nbt.getInteger("playerListSize");
-		Map<Integer, String> players = new TreeMap<Integer, String>();
+		TreeMap<UUID, String> players = new TreeMap<UUID, String>();
 		for(int i = 0; i < playerListSize; i++)
 		{
-			players.put(nbt.getInteger("#player" + i), nbt.getString("@player" + i));
+			String playerString = "player" + i + "_ID";
+			UUID playerID = new UUID(nbt.getLong(playerString + 1), nbt.getLong(playerString + 2));
+			players.put(playerID, nbt.getString("@player" + i));
 		}
 		
 		int resourceListSize = nbt.getInteger("resourceListSize");
-		Map<UUID, Long> resources = new TreeMap<UUID, Long>();
+		TreeMap<UUID, Long> resources = new TreeMap<UUID, Long>();
 		for(int i = 0; i < resourceListSize; i++)
 		{
 			UUID resourceID = new UUID(nbt.getLong("resource" + i + "_ID1"), nbt.getLong("resource" + i + "_ID2"));
@@ -84,7 +88,7 @@ public class Empire
 		}
 		
 		int territorySize = nbt.getInteger("territorySize");
-		Map<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
+		TreeMap<TilePos, Integer> tiles = new TreeMap<TilePos, Integer>();
 		for(int i = 0; i < territorySize; i++)
 		{
 			String tileID = "#tile_" + i;
@@ -93,7 +97,7 @@ public class Empire
 		}
 		
 		int vassalListSize = nbt.getInteger("vassalListSize");
-		Map<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
+		TreeMap<UUID, Integer> vassals = new TreeMap<UUID, Integer>();
 		for(int i = 0; i < vassalListSize; i++)
 		{
 			String vassalID = "#vassal_" + i;
@@ -102,7 +106,7 @@ public class Empire
 		}
 		
 		int cityListSize = nbt.getInteger("cityListSize");
-		Map<UUID, Integer> cities = new TreeMap<UUID, Integer>();
+		TreeMap<UUID, Integer> cities = new TreeMap<UUID, Integer>();
 		for(int i = 0; i < cityListSize; i++)
 		{
 			String cityID = "#city_" + i;
@@ -164,9 +168,14 @@ public class Empire
 		return this.exists;
 	}
 	
-	public Map<UUID, Integer> getCities()
+	public TreeMap<UUID, Integer> getCities()
 	{
 		return this.cities;
+	}
+	
+	public EmpireIntelligence getEmpireIntelligence()
+	{
+		return this.empireIntelligence;
 	}
 	
 	public EmpireTurn getEmpireTurn()
@@ -194,7 +203,7 @@ public class Empire
 		return this.empireName;
 	}
 	
-	public Map<Integer, String> getPlayers()
+	public TreeMap<UUID, String> getPlayers()
 	{
 		return this.players;
 	}
@@ -204,7 +213,7 @@ public class Empire
 		return this.resources.get(resource) != null ? this.resources.get(resource) : 0L;
 	}
 	
-	public Map<UUID, Integer> getVassals()
+	public TreeMap<UUID, Integer> getVassals()
 	{
 		return this.vassals;
 	}
@@ -213,7 +222,7 @@ public class Empire
 	{
 		this.exists = true;
 	}
-	
+
 	public NBTTagCompound writeToNBT ()
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -228,11 +237,12 @@ public class Empire
 		if(this.players.size() > 0)
 		{
 			int i = 0;
-			for(Map.Entry<Integer, String> entry : this.players.entrySet())
+			for(Map.Entry<UUID, String> entry : this.players.entrySet())
 			{
-				String playerNumber = "#player_" + i;
+				String playerString = "player_" + i + "_ID";
 				String playerPosition = "@player_" + i;
-				nbt.setInteger(playerNumber, entry.getKey());
+				nbt.setLong(playerString + 1, entry.getKey().getMostSignificantBits());
+				nbt.setLong(playerString + 2, entry.getKey().getLeastSignificantBits());
 				nbt.setString(playerPosition, entry.getValue());
 				
 				i++;
